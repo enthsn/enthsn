@@ -1,1 +1,6 @@
 theme: jekyll-theme-midnight
+title: https://enthsn.github.io/enthsn
+description: Enthsn Kodi Repository
+show_downloads: false
+github:
+  repository_url: https://github.com/enthsn/enthsn
