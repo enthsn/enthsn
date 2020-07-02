@@ -54,7 +54,7 @@ def main_categories(name, url, language, mode):
     addDir('Bengali',        '', 7,  img_path + 'bengali.jpg',   'bengali',   'Bengali', img_path + 'bengali.jpg')
     addDir('Marathi',        '', 7,  img_path + 'marathi.jpg',   'marathi',   'Marathi', img_path + 'marathi.jpg')
     addDir('Punjabi',        '', 7,  img_path + 'punjabi.jpg',   'punjabi',   'Punjabi', img_path + 'punjabi.jpg')
-    addDir('Addon Settings', '', 12, img_path + 'settings.png',  '',          'Settings')
+    addDir('Addon Settings', '', 12, 'DefaultAddonService.png',  '',          'Settings')
     xbmcplugin.endOfDirectory(_plugin_handle)
 
 ##
@@ -63,14 +63,14 @@ def main_categories(name, url, language, mode):
 def inner_categories(name, url, language, mode):
     xbmcplugin.setContent(_plugin_handle, 'videos')
     postData = 'lang=' + language
-    addDir('Featured',      '',       4,  '', language, 'Featured Movies')
-    addDir('Recent',        postData, 3,  '', language, 'Recently Added Movies')
-    addDir('Staff Picks',   postData, 5,  '', language, 'Movies picked by Staff')
-    addDir('A-Z',           postData, 8,  '', language, 'Browse movies sorted alphabetically')
-    addDir('Years',         postData, 9,  '', language, 'Browse movies sorted by release year')
+    addDir('Featured',      '',       4,  'DefaultAddonsRecentlyUpdated.png', language, 'Featured Movies')
+    addDir('Recent',        postData, 3,  'DefaultRecentlyAddedMovies.png', language, 'Recently Added Movies')
+    addDir('Staff Picks',   postData, 5,  'DefaultMovies.png', language, 'Movies picked by Staff')
+    addDir('A-Z',           postData, 8,  'DefaultMovieTitle.png', language, 'Browse movies sorted alphabetically')
+    addDir('Years',         postData, 9,  'DefaultYear.png', language, 'Browse movies sorted by release year')
     #addDir('Cast',          postData, 10, '', language, 'Browse movies by Cast')
     #addDir('Director',      postData, 10, '', language, 'Browse movies by Director')
-    addDir('Search',        postData, 6,  '', language, 'Search for movies')
+    addDir('Search',        postData, 6,  'DefaultAddonsSearch.png', language, 'Search for movies')
     xbmcplugin.endOfDirectory(_plugin_handle)
 
 ##
