@@ -75,14 +75,6 @@ def main_categories(name, url, language, mode):
         else:
             image = ""
         addDir(title, '', 7, image, lang, title+' movies', image)
-    #addDir('Telugu',         '', 7,  img_path + 'telugu.jpg',    'telugu',    'Telugu', img_path + 'telugu.jpg')
-    #addDir('Hindi',          '', 7,  img_path + 'hindi.jpg',     'hindi',     'Hindi', img_path + 'hindi.jpg')
-    #addDir('Tamil',          '', 7,  img_path + 'tamil.jpg',     'tamil',     'Tamil', img_path + 'tamil.jpg')
-    #addDir('Malayalam',      '', 7,  img_path + 'malayalam.jpg', 'malayalam', 'Malayalam', img_path + 'malayalam.jpg')
-    #addDir('Kannada',        '', 7,  img_path + 'kannada.jpg',   'kannada',   'Kannada', img_path + 'kannada.jpg')
-    #addDir('Bengali',        '', 7,  img_path + 'bengali.jpg',   'bengali',   'Bengali', img_path + 'bengali.jpg')
-    #addDir('Marathi',        '', 7,  img_path + 'marathi.jpg',   'marathi',   'Marathi', img_path + 'marathi.jpg')
-    #addDir('Punjabi',        '', 7,  img_path + 'punjabi.jpg',   'punjabi',   'Punjabi', img_path + 'punjabi.jpg')
     addDir('Addon Settings', '', 12, 'DefaultAddonService.png',  '',          'Settings')
     xbmcplugin.endOfDirectory(_plugin_handle)
 
@@ -403,7 +395,27 @@ def get_movie(s, mainurl, mainurlajax, headers=None):
     import HTMLParser
     import json
 
+    check_sorry_message = "Our servers are almost maxed"
+    check_go_premium = "Go Premium"
+
     htm=s.get(mainurl, headers=headers, cookies=s.cookies).text.encode('utf-8')
+
+    if re.search(check_sorry_message, htm):
+        xbmcgui.Dialog().ok(
+            "Server Error",
+            "Sorry. Einthusan servers are almost maxed.",
+            "Please try again in 5 - 10 mins or upgrade to a Lifetime Premium account.",
+        )
+        return False
+
+    if re.search(check_go_premium, htm):
+        xbmcgui.Dialog().ok(
+            "UltraHD Error",
+            "Premium Membership Required for UltraHD Movies.",
+            "Please add Premium Membership Login details in Addon Settings.",
+        )
+        return False
+
     lnk=re.findall('data-ejpingables=["\'](.*?)["\']',htm)[0]
 
     r=decodeEInth(lnk)
@@ -558,7 +570,7 @@ def addStream(name, url, mode, icon='', lang='',info=None):
                 'poster': icon,
                 'fanart': icon})
     liz.setProperty('IsPlayable', 'true')
-    liz.setRating('einthusan', 4.3, 10, True)
+    #liz.setRating('einthusan', 4.3, 10, True)
 
     if 'trailer' in info:
         # xbmc.log('adding context menu item for playing trailer: '+info['trailer'], xbmc.LOGNOTICE)
