@@ -36,7 +36,6 @@ location = Locations[locationId]
 EINTHUSAN_URL='https://www.einthusan.com'
 
 einthusanRedirectUrl = '';
-einthusanRedirectHost = '';
 
 cwd = ADDON.getAddonInfo('path')
 img_path = cwd + '/images/'
@@ -45,15 +44,45 @@ img_path = cwd + '/images/'
 # Prints the main categories. Called when id is 0.
 ##
 def main_categories(name, url, language, mode):
+    global einthusanRedirectUrl
+    languages = []
+    try:
+        r = requests.get(EINTHUSAN_URL)
+
+        if einthusanRedirectUrl == '':
+            parsedUrl=urllib3.util.parse_url(r.url);
+            einthusanRedirectUrl='{uri.scheme}://{uri.netloc}'.format(uri=parsedUrl)
+            xbmc.log('Einthusan Redirect URL: '+einthusanRedirectUrl, level=xbmc.LOGNOTICE)
+        
+        matches = re.findall('<li><a href=".*?\?lang=(.+?)"><div.*?div><img src="(.+?)"><p class=".*?-bg">(.+?)<\/p>',
+                             r.text)
+        if len(matches) != 0:
+            languages = matches
+            
+    except:
+        xbmcgui.Dialog().ok("Network Error",
+                            "Please check your network connectivity",
+                            "Try restarting the addon")
+        return
+
+
     xbmcplugin.setContent(_plugin_handle, 'videos')
-    addDir('Telugu',         '', 7,  img_path + 'telugu.jpg',    'telugu',    'Telugu', img_path + 'telugu.jpg')
-    addDir('Hindi',          '', 7,  img_path + 'hindi.jpg',     'hindi',     'Hindi', img_path + 'hindi.jpg')
-    addDir('Tamil',          '', 7,  img_path + 'tamil.jpg',     'tamil',     'Tamil', img_path + 'tamil.jpg')
-    addDir('Malayalam',      '', 7,  img_path + 'malayalam.jpg', 'malayalam', 'Malayalam', img_path + 'malayalam.jpg')
-    addDir('Kannada',        '', 7,  img_path + 'kannada.jpg',   'kannada',   'Kannada', img_path + 'kannada.jpg')
-    addDir('Bengali',        '', 7,  img_path + 'bengali.jpg',   'bengali',   'Bengali', img_path + 'bengali.jpg')
-    addDir('Marathi',        '', 7,  img_path + 'marathi.jpg',   'marathi',   'Marathi', img_path + 'marathi.jpg')
-    addDir('Punjabi',        '', 7,  img_path + 'punjabi.jpg',   'punjabi',   'Punjabi', img_path + 'punjabi.jpg')
+    for lang_item in languages:
+        lang = str(lang_item[0])
+        title = str(lang_item[2])
+        if "http" not in lang_item[1] and lang_item[1] != "":
+            image = "https://" + str(lang_item[1])
+        else:
+            image = ""
+        addDir(title, '', 7, image, lang, title+' movies', image)
+    #addDir('Telugu',         '', 7,  img_path + 'telugu.jpg',    'telugu',    'Telugu', img_path + 'telugu.jpg')
+    #addDir('Hindi',          '', 7,  img_path + 'hindi.jpg',     'hindi',     'Hindi', img_path + 'hindi.jpg')
+    #addDir('Tamil',          '', 7,  img_path + 'tamil.jpg',     'tamil',     'Tamil', img_path + 'tamil.jpg')
+    #addDir('Malayalam',      '', 7,  img_path + 'malayalam.jpg', 'malayalam', 'Malayalam', img_path + 'malayalam.jpg')
+    #addDir('Kannada',        '', 7,  img_path + 'kannada.jpg',   'kannada',   'Kannada', img_path + 'kannada.jpg')
+    #addDir('Bengali',        '', 7,  img_path + 'bengali.jpg',   'bengali',   'Bengali', img_path + 'bengali.jpg')
+    #addDir('Marathi',        '', 7,  img_path + 'marathi.jpg',   'marathi',   'Marathi', img_path + 'marathi.jpg')
+    #addDir('Punjabi',        '', 7,  img_path + 'punjabi.jpg',   'punjabi',   'Punjabi', img_path + 'punjabi.jpg')
     addDir('Addon Settings', '', 12, 'DefaultAddonService.png',  '',          'Settings')
     xbmcplugin.endOfDirectory(_plugin_handle)
 
@@ -442,7 +471,7 @@ def preferred_server(lnk, mainurl):
 
 def login_info(s, referurl):
 
-    headers={'Host':einthusanRedirectHost, 'Origin':einthusanRedirectUrl,'Referer':referurl,'User-Agent':'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36'}
+    headers={'Origin':einthusanRedirectUrl,'Referer':referurl,'User-Agent':'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36'}
 
     htm = s.get(einthusanRedirectUrl+'/login/?lang=hindi', headers=headers, allow_redirects=False).content
     csrf=re.findall('data-pageid=["\'](.*?)["\']',htm)[0]
@@ -501,7 +530,7 @@ def addDir(name, url, mode, icon='', lang='',description='', fanart=''):
     liz.setInfo('video', {'plot': description})
 
     if icon == '':
-        icon = cwd + '/icon.png'
+        icon = 'DefaultFolder.png'
 
     if fanart == '':
         fanart = cwd + '/fanart.jpg'
@@ -538,6 +567,8 @@ def addStream(name, url, mode, icon='', lang='',info=None):
     ok=xbmcplugin.addDirectoryItem(handle=_plugin_handle, url=u, listitem=liz, isFolder=False)
     return ok
 
+
+##### main #####
 params=get_params()
 url=''
 name=''
@@ -574,13 +605,6 @@ try:
     einthusanRedirectUrl=urllib.unquote_plus(params["einthusanRedirectUrl"])
 except:
     pass
-
-if einthusanRedirectUrl == '':
-    parsedUrl=urllib3.util.parse_url(requests.get(EINTHUSAN_URL).url);
-    einthusanRedirectUrl='{uri.scheme}://{uri.netloc}'.format(uri=parsedUrl)
-    xbmc.log('Einthusan Redirect URL: '+einthusanRedirectUrl, level=xbmc.LOGNOTICE)
-    einthusanRedirectHost='{uri.netloc}'.format(uri=parsedUrl)
-    xbmc.log('Einthusan Hostname: '+einthusanRedirectHost, level=xbmc.LOGNOTICE)
 
 # Modes
 # 0: The main Categories Menu. Selection of language
