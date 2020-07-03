@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.enthsn" name="Einthusan" version="1.0.3" provider-name="Enthsn">
+<addon id="plugin.video.enthsn" name="Einthusan" version="1.0.4" provider-name="Enthsn">
     <requires>
         <import addon="xbmc.python" version="2.26.0"/>
         <import addon="script.module.requests" version="2.22.0"/>
@@ -16,6 +16,7 @@
         <language>en</language>
         <license>MIT LICENSE</license>
         <forum></forum>
+        <website>https://enthsn.github.io/enthsn</website>
         <source>https://github.com/enthsn/enthsn</source>
         <assets>
             <icon>icon.png</icon>

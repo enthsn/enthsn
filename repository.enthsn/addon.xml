@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="repository.enthsn" name="Enthsn Add-on Repository" version="1.0.1" provider-name="Enthsn">
+<addon id="repository.enthsn" name="Enthsn Add-on Repository" version="1.0.2" provider-name="Enthsn">
     <extension point="xbmc.addon.repository" name="Enthsn Add-on Repository">
         <info compressed="false">https://github.com/enthsn/enthsn/raw/master/zips/addons.xml</info>
         <checksum>https://github.com/enthsn/enthsn/raw/master/zips/addons.xml.md5</checksum>
@@ -13,6 +13,7 @@
         <language>en</language>
         <license>MIT LICENSE</license>
         <forum></forum>
+        <website>https://enthsn.github.io/enthsn</website>
         <source>https://github.com/enthsn/enthsn</source>
         <assets>
             <icon>icon.png</icon>
