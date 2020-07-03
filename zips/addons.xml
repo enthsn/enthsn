@@ -1,43 +1,53 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <addons>
-<addon id="repository.enthsn" name="Enthsn Add-on Repository"
-    version="1.0.0"
-    provider-name="Enthsn">
-	<extension point="xbmc.addon.repository" name="Enthsn Add-on Repository">
-		<info compressed="false">https://github.com/enthsn/enthsn/raw/master/zips/addons.xml</info>
-		<checksum>https://github.com/enthsn/enthsn/raw/master/zips/addons.xml.md5</checksum>
-		<datadir zip="true">https://github.com/enthsn/enthsn/raw/master/zips/</datadir>
-	</extension>
-	<extension point="xbmc.addon.metadata">
-		<summary>Install Add-ons for Kodi from Enthsn Add-on Repository</summary>
-		<description>Video plug-ins for Kodi by Enthsn!</description>
-		<disclaimer></disclaimer>
-		<platform>all</platform>
-	</extension>
+<addon id="repository.enthsn" name="Enthsn Add-on Repository" version="1.0.1" provider-name="Enthsn">
+    <extension point="xbmc.addon.repository" name="Enthsn Add-on Repository">
+        <info compressed="false">https://github.com/enthsn/enthsn/raw/master/zips/addons.xml</info>
+        <checksum>https://github.com/enthsn/enthsn/raw/master/zips/addons.xml.md5</checksum>
+        <datadir zip="true">https://github.com/enthsn/enthsn/raw/master/zips/</datadir>
+    </extension>
+    <extension point="xbmc.addon.metadata">
+        <summary lang="en_GB">Install Add-ons for Kodi from Enthsn Add-on Repository</summary>
+        <description lang="en_GB">Video plug-ins for Kodi by Enthsn!</description>
+        <disclaimer>This repo is not endorsed by Einthusan.tv</disclaimer>
+        <platform>all</platform>
+        <language>en</language>
+        <license>MIT LICENSE</license>
+        <forum></forum>
+        <source>https://github.com/enthsn/enthsn</source>
+        <assets>
+            <icon>icon.png</icon>
+            <fanart>fanart.jpg</fanart>
+        </assets>
+    </extension>
 </addon>
 
-<addon id="plugin.video.enthsn"
-       name="Einthusan"
-       version="1.0.2"
-       provider-name="Enthsn">
+<addon id="plugin.video.enthsn" name="Einthusan" version="1.0.3" provider-name="Enthsn">
     <requires>
-        <import addon="xbmc.python" version="2.1.0"/>
-        <import addon="script.module.requests" version="2.7.0" />
-        <import addon="script.module.html2text" />
+        <import addon="xbmc.python" version="2.26.0"/>
+        <import addon="script.module.requests" version="2.22.0"/>
+        <import addon="script.module.html2text" version="2015.6.21"/>
     </requires>
     <extension point="xbmc.python.pluginsource" library="default.py">
         <provides>video</provides>
     </extension>
     <extension point="xbmc.addon.metadata">
+        <summary lang="en_GB">Stream movies from Einthusan.tv - #1 South Asian Hub.</summary>
+        <description lang="en_GB">Einthusan.tv is the leading Premium South Asian streaming content provider of full-length feature films in on-demand superior HD. Einthusan.tv brings you over 4000+ legally licensed content from 9 regional languages of India</description>
+        <disclaimer>This plugin is not endorsed by Einthusan.tv</disclaimer>
         <platform>all</platform>
-        <summary>Watch movies from Einthusan.com</summary>
-        <description lang="en">
-        This XBMC plugin allows to watch movies from Einthusan.com. Please support them.
-        Credits to Humla for creating the addon.
-        </description>
+        <language>en</language>
+        <license>MIT LICENSE</license>
+        <forum></forum>
+        <source>https://github.com/enthsn/enthsn</source>
         <assets>
             <icon>icon.png</icon>
             <fanart>fanart.jpg</fanart>
+            <screenshot>images/screenshot-1.png</screenshot>
+            <screenshot>images/screenshot-2.png</screenshot>
+            <screenshot>images/screenshot-3.png</screenshot>
+            <screenshot>images/screenshot-4.png</screenshot>
+            <screenshot>images/screenshot-5.png</screenshot>
         </assets>
     </extension>
 </addon>
