@@ -33,7 +33,7 @@ if (locationId > len(Locations) - 1):
     locationId = len(Locations) - 1
 location = Locations[locationId]
 
-EINTHUSAN_URL='https://www.einthusan.com'
+EINTHUSAN_URL='https://www.einthusan.tv'
 
 einthusanRedirectUrl = '';
 
