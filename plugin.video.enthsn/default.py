@@ -545,7 +545,7 @@ def addDir(name, url, mode, icon='', lang='',description='', fanart=''):
         icon = 'DefaultFolder.png'
 
     if fanart == '':
-        fanart = cwd + '/fanart.jpg'
+        fanart = cwd + '/fanart.png'
 
     liz.setArt({'icon': icon,
                 'thumb': icon,

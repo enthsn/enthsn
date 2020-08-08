@@ -23,7 +23,7 @@
     </extension>
 </addon>
 
-<addon id="plugin.video.enthsn" name="Einthusan" version="1.0.5" provider-name="Enthsn">
+<addon id="plugin.video.enthsn" name="Einthusan" version="1.0.6" provider-name="Enthsn">
     <requires>
         <import addon="xbmc.python" version="2.26.0"/>
         <import addon="script.module.requests" version="2.22.0"/>
@@ -44,7 +44,7 @@
         <source>https://github.com/enthsn/enthsn</source>
         <assets>
             <icon>icon.png</icon>
-            <fanart>fanart.jpg</fanart>
+            <fanart>fanart.png</fanart>
             <screenshot>images/screenshot-1.png</screenshot>
             <screenshot>images/screenshot-2.png</screenshot>
             <screenshot>images/screenshot-3.png</screenshot>
