@@ -23,7 +23,7 @@
     </extension>
 </addon>
 
-<addon id="plugin.video.enthsn" name="Einthusan" version="1.0.6" provider-name="Enthsn">
+<addon id="plugin.video.enthsn" name="Einthusan" version="1.0.7" provider-name="Enthsn">
     <requires>
         <import addon="xbmc.python" version="2.26.0"/>
         <import addon="script.module.requests" version="2.22.0"/>
