@@ -23,11 +23,12 @@
     </extension>
 </addon>
 
-<addon id="plugin.video.enthsn" name="Einthusan" version="1.0.7" provider-name="Enthsn">
+<addon id="plugin.video.enthsn" name="Einthusan" version="1.0.8" provider-name="Enthsn">
     <requires>
         <import addon="xbmc.python" version="2.26.0"/>
-        <import addon="script.module.requests" version="2.22.0"/>
-        <import addon="script.module.html2text" version="2015.6.21"/>
+        <import addon="script.module.kodi-six" />
+        <import addon="script.module.requests" />
+        <import addon="script.module.html2text" />
     </requires>
     <extension point="xbmc.python.pluginsource" library="default.py">
         <provides>video</provides>

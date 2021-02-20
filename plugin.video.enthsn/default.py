@@ -5,9 +5,7 @@
 import os
 import re
 import urllib, urllib3
-import xbmcplugin
-import xbmcgui
-import xbmcaddon
+from kodi_six import xbmc, xbmcplugin, xbmcgui, xbmcaddon
 from datetime import date
 import requests
 import html2text
@@ -398,7 +396,7 @@ def get_movie(s, mainurl, mainurlajax, headers=None):
     check_sorry_message = "Our servers are almost maxed"
     check_go_premium = "Go Premium"
 
-    htm=s.get(mainurl, headers=headers, cookies=s.cookies).text.encode('utf-8')
+    htm=s.get(mainurl, headers=headers, cookies=s.cookies).text
 
     if re.search(check_sorry_message, htm):
         xbmcgui.Dialog().ok(
@@ -424,7 +422,7 @@ def get_movie(s, mainurl, mainurlajax, headers=None):
     h = HTMLParser.HTMLParser()
     gid=re.findall('data-pageid=["\'](.*?)["\']',htm)[0]
 
-    gid=h.unescape(gid).encode("utf-8")
+    gid=h.unescape(gid)
 
     postdata={'xEvent':'UIVideoPlayer.PingOutcome','xJson':jdata,'arcVersion':'3','appVersion':'59','gorilla.csrf.Token':gid}
 
