@@ -24,6 +24,7 @@ _plugin_handle = int(sys.argv[1])
 
 NUMBER_OF_PAGES = 3
 ADDON = xbmcaddon.Addon(id='plugin.video.enthsn')
+
 username = ADDON.getSetting('enthsn.username')
 password = ADDON.getSetting('enthsn.password')
 
@@ -33,6 +34,14 @@ locationId = int(locationStr)
 if (locationId > len(Locations) - 1):
     locationId = len(Locations) - 1
 location = Locations[locationId]
+
+videoQualityStr = xbmcplugin.getSetting(_plugin_handle, 'enthsn.video.quality')
+VideoQualityOptions = ['SD/HD', 'UHD']
+videoQualityId = int(videoQualityStr)
+if (videoQualityId > len(VideoQualityOptions) -1):
+    videoQualityId = 0
+videoQuality = VideoQualityOptions[videoQualityId]
+
 
 EINTHUSAN_URL='https://www.einthusan.tv'
 
@@ -367,17 +376,14 @@ def play_video(name, url, language, mode):
     name,url,lang,isithd,referurl=url.split(',')
 
     if isithd=='itshd':
-        dialog = xbmcgui.Dialog()
-        ret = dialog.select('Quality Options', ['Play HD/SD', 'Play UHD'])
-        if ret > -1:
-            if ret == 0:
+            if videoQuality == 'SD/HD':
                 # isithd = 'itsnothd'
                 mainurl=einthusanRedirectUrl+'/movie/watch/%s/?lang=%s'%(url,lang)
                 mainurlajax=einthusanRedirectUrl+'/ajax/movie/watch/%s/?lang=%s'%(url,lang)
                 # xbmc.log(mainurlajax, LOGINFO)
                 headers={'Origin':einthusanRedirectUrl,'Referer':einthusanRedirectUrl+'/movie/browse/?lang=hindi','User-Agent':'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36'}
                 get_movie(s, mainurl, mainurlajax, headers)
-            if ret == 1:
+            if videoQuality == 'UHD':
                 # isithd = 'itshd'
                 mainurl=einthusanRedirectUrl+'/movie/watch/%s/?lang=%s&uhd=true'%(url,lang)
                 mainurlajax=einthusanRedirectUrl+'/ajax/movie/watch/%s/?lang=%s&uhd=true'%(url,lang)

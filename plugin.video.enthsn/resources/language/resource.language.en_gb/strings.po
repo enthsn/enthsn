@@ -23,7 +23,7 @@ msgid "General"
 msgstr ""
 
 msgctxt "#3001"
-msgid "Highest Video Quality"
+msgid "Enter User Credentials"
 msgstr ""
 
 msgctxt "#3002"
@@ -35,29 +35,45 @@ msgid "Password"
 msgstr ""
 
 msgctxt "#3004"
-msgid "Location"
+msgid "Select Your Nearest City"
 msgstr ""
 
 msgctxt "#3005"
-msgid "Los Angeles"
+msgid "Location"
 msgstr ""
 
 msgctxt "#3006"
-msgid "Dallas"
+msgid "Los Angeles"
 msgstr ""
 
 msgctxt "#3007"
-msgid "Washinton D.C"
+msgid "Dallas"
 msgstr ""
 
 msgctxt "#3008"
+msgid "Washinton D.C"
+msgstr ""
+
+msgctxt "#3009"
 msgid "London"
 msgstr ""
 
-msgctxt "#30012"
+msgctxt "#3010"
 msgid "No Preference"
 msgstr ""
 
-msgctxt "#30011"
-msgid "Select Your Nearest City"
+msgctxt "#3011"
+msgid "Select Video Quality"
+msgstr ""
+
+msgctxt "#3012"
+msgid "Highest Video Quality"
+msgstr ""
+
+msgctxt "#3013"
+msgid "SD/HD"
+msgstr ""
+
+msgctxt "#3014"
+msgid "UHD"
 msgstr ""

@@ -2,7 +2,7 @@
 <settings version="1">
     <section id="plugin.video.enthsn">
         <category help="" id="general" label="3000"> 
-            <group id="1">
+            <group id="1" label="3001">
                 <setting id="enthsn.username" type="string" label="3002">
                     <level>0</level>
                     <default/>
@@ -20,28 +20,51 @@
                         <allowempty>true</allowempty>
                     </constraints>
                     <dependencies>
-                        <dependency type="enable">
-                            <condition operation="is" setting="enthsn.username"></condition>
-                        </dependency>
+                        <dependency type="enable" operator="!is" setting="enthsn.username"></dependency>
                     </dependencies>
                     <control format="string" type="edit">
                         <heading/>
                     </control>
                 </setting>
             </group>
-            <group id="2">
-                <setting id="enthsn.location" type="integer" label="3004">
+            <group id="2" label="3004">
+                <setting id="enthsn.location" type="integer" label="3005">
                     <level>0</level>
                     <default>4</default>
                     <constraints>
                         <options>
-                            <option label="3005">0</option>
-                            <option label="3006">1</option>
-                            <option label="3007">2</option>
-                            <option label="3008">3</option>
-                            <option label="3012">4</option>
+                            <option label="3006">0</option>
+                            <option label="3007">1</option>
+                            <option label="3008">2</option>
+                            <option label="3009">3</option>
+                            <option label="3010">4</option>
                         </options>
                     </constraints>
+                    <control format="string" type="spinner">
+                        <heading/>
+                    </control>
+                </setting>
+            </group>
+            <group id="3" label="3011">
+                <setting id="enthsn.video.quality" type="integer" label="3012">
+                    <level>0</level>
+                    <default>0</default>
+                    <constraints>
+                        <options>
+                            <option label="3013">0</option>
+                            <option label="3014">1</option>
+                        </options>
+                    </constraints>
+                    <!--
+                    <dependencies>
+                        <dependency type="enable">
+                            <and>
+                                <condition operator="!is" setting="enthsn.username"></condition>
+                                <condition operator="!is" setting="enthsn.password"></condition>
+                            </and>
+                        </dependency>
+                    </dependencies>
+                    -->
                     <control format="string" type="spinner">
                         <heading/>
                     </control>
