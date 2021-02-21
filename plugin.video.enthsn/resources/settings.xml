@@ -1,6 +1,52 @@
-<settings>
-   <setting id="username" type="text" label="3002" default="" />
-   <setting id="password" type="text" option="hidden" label="3003" enable="!eq(-1,)" default="" />
-   <setting label="3011" type="lsep"/>
-   <setting id="location" type="select" label="3004" lvalues="3005|3006|3007|3008|3012" default="3012"/>
+<?xml version="1.0" ?>
+<settings version="1">
+    <section id="plugin.video.enthsn">
+        <category help="" id="general" label="3000"> 
+            <group id="1">
+                <setting id="enthsn.username" type="string" label="3002">
+                    <level>0</level>
+                    <default/>
+                    <constraints>
+                        <allowempty>true</allowempty>
+                    </constraints>
+                    <control format="string" type="edit">
+                        <heading/>
+                    </control>
+                </setting>
+                <setting id="enthsn.password" type="string" label="3003">
+                    <level>0</level>
+                    <default/>
+                    <constraints>
+                        <allowempty>true</allowempty>
+                    </constraints>
+                    <dependencies>
+                        <dependency type="enable">
+                            <condition operation="is" setting="enthsn.username"></condition>
+                        </dependency>
+                    </dependencies>
+                    <control format="string" type="edit">
+                        <heading/>
+                    </control>
+                </setting>
+            </group>
+            <group id="2">
+                <setting id="enthsn.location" type="integer" label="3004">
+                    <level>0</level>
+                    <default>4</default>
+                    <constraints>
+                        <options>
+                            <option label="3005">0</option>
+                            <option label="3006">1</option>
+                            <option label="3007">2</option>
+                            <option label="3008">3</option>
+                            <option label="3012">4</option>
+                        </options>
+                    </constraints>
+                    <control format="string" type="spinner">
+                        <heading/>
+                    </control>
+                </setting>
+            </group>
+        </category>
+    </section>
 </settings>

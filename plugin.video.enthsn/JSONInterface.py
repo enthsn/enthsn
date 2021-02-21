@@ -1,6 +1,7 @@
 import json
 import time
 import HTTPInterface
+from kodi_six import xbmc
 
 ##
 # Gets the details when a movie id is passed.
@@ -16,8 +17,8 @@ def get_movie_detail(movie_id):
 	try:
 		response_json = json.loads(html)
 	except ValueError:
-		print "Value Error: Error when decoding JSON"
-		print html
+		xbcm.log("Value Error: Error when decoding JSON", level=LOGERROR)
+		xbmc.log(html, level=LOGERROR)
 	return response_json['movie_id'], response_json['movie'], response_json['cover']
 ##
 # Returns a list of movie id for a specific filters
@@ -30,8 +31,8 @@ def apply_filter(filters):
 	try:
 		response_json = json.loads(result)
 	except ValueError:
-		print "Value Error: Error when decoding JSON"
-		print result
+		xbmc.log("Value Error: Error when decoding JSON", level=LOGERROR)
+		xbmc.log(result, level=LOGERROR)
 	return  response_json
 
 def get_options(attr, language):
@@ -41,14 +42,14 @@ def get_options(attr, language):
 	html = HTTPInterface.http_post(API_URL, data=data)
 	result = {}
 	try:
-		print result
+		xbmc.log(result, xbmc.LOGINFO)
 		result = json.loads(html)
 		return result['organize'][attr]['filtered']
 	except KeyError:
-		print "Key Error "  
+		xbmc.log("Key Error ", xmbc.LOGERROR)
 	except ValueError:
-		print "Value Error: Error when decoding JSON"
-		print html
+		xbmc.log("Value Error: Error when decoding JSON", xbmc.LOGERROR)
+		xbmc.log(html, xbmc.LOGERROR)
 	return {}
 	
 ##

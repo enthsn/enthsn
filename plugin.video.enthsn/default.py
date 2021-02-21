@@ -2,13 +2,16 @@
 # einthusan.com Plugin maintained by ReasonsRepo
 # einthusan.com Plugin maintained by ssreekanth
 
+import base64
+from datetime import date
+import html
+import html2text
+import json
 import os
 import re
-import urllib, urllib3
-from kodi_six import xbmc, xbmcplugin, xbmcgui, xbmcaddon
-from datetime import date
 import requests
-import html2text
+from urllib.parse import urlparse, quote_plus, unquote_plus
+from kodi_six import xbmc, xbmcplugin, xbmcgui, xbmcaddon
 
 import HTTPInterface
 import JSONInterface
@@ -21,10 +24,10 @@ _plugin_handle = int(sys.argv[1])
 
 NUMBER_OF_PAGES = 3
 ADDON = xbmcaddon.Addon(id='plugin.video.enthsn')
-username = ADDON.getSetting('username')
-password = ADDON.getSetting('password')
+username = ADDON.getSetting('enthsn.username')
+password = ADDON.getSetting('enthsn.password')
 
-locationStr = xbmcplugin.getSetting(_plugin_handle, 'location')
+locationStr = xbmcplugin.getSetting(_plugin_handle, 'enthsn.location')
 Locations = ['Los Angeles', 'Dallas', 'Washington D.C', 'London', 'No Preference']
 locationId = int(locationStr)
 if (locationId > len(Locations) - 1):
@@ -48,9 +51,9 @@ def main_categories(name, url, language, mode):
         r = requests.get(EINTHUSAN_URL)
 
         if einthusanRedirectUrl == '':
-            parsedUrl=urllib3.util.parse_url(r.url);
+            parsedUrl=urlparse(r.url);
             einthusanRedirectUrl='{uri.scheme}://{uri.netloc}'.format(uri=parsedUrl)
-            xbmc.log('Einthusan Redirect URL: '+einthusanRedirectUrl, level=xbmc.LOGNOTICE)
+            xbmc.log('Einthusan Redirect URL: '+einthusanRedirectUrl, level=xbmc.LOGINFO)
         
         matches = re.findall('<li><a href=".*?\?lang=(.+?)"><div.*?div><img src="(.+?)"><p class=".*?-bg">(.+?)<\/p>',
                              r.text)
@@ -99,12 +102,12 @@ def get_movies_and_music_videos(name, url, language, mode):
     get_movies_and_music_videos_helper(name, url, language, page=1)
 
 def get_movies_and_music_videos_helper(name, url, language, page):
-    # xbmc.log(url, level=xbmc.LOGNOTICE)
+    # xbmc.log(url, level=xbmc.LOGINFO)
     #xbmcplugin.setPluginCategory(_plugin_handle, name)
     xbmcplugin.setContent(_plugin_handle, 'movies')
     referurl = url
-    html =  requests.get(url).text
-    matches = re.compile('<div class="block1">.*?href=".*?watch\/(.*?)\/\?lang=(.*?)".*?<img src="(.+?)".+?<h3>(.+?)<\/h3>.+?<p>(.+?)<span>(.+?)<\/span>.+?i class=(.+?)<p class=".*?synopsis">\s*(.+?)\s*<\/p><div class="professionals">(.*?)<\/div><\/div><div class="block3">.+?<span>Wiki<\/span>.+?<a(.+?)Trailer<\/span>').findall(html)
+    htmlcontent =  requests.get(url).text
+    matches = re.compile('<div class="block1">.*?href=".*?watch\/(.*?)\/\?lang=(.*?)".*?<img src="(.+?)".+?<h3>(.+?)<\/h3>.+?<p>(.+?)<span>(.+?)<\/span>.+?i class=(.+?)<p class=".*?synopsis">\s*(.+?)\s*<\/p><div class="professionals">(.*?)<\/div><\/div><div class="block3">.+?<span>Wiki<\/span>.+?<a(.+?)Trailer<\/span>').findall(htmlcontent)
     for id, lang, img, name, year, genre, ishd, synopsis, prof_content, trailer_content in matches:
         name = str(name.replace(",","").encode('ascii', 'ignore').decode('ascii'))
         movie = str(name)+','+str(id)+','+lang+','
@@ -119,7 +122,7 @@ def get_movies_and_music_videos_helper(name, url, language, page):
             description=""
 
         info = {
-            'plot': unescape(html2text.html2text(description).replace('\n', ' ').replace('\r', '')),
+            'plot': html.unescape(html2text.html2text(description).replace('\n', ' ').replace('\r', '')),
             'genre': genre,
             'year': year,
             'title': html2text.html2text(name),
@@ -148,7 +151,7 @@ def get_movies_and_music_videos_helper(name, url, language, page):
 
         addStream(name, movie, 2, image, lang, info)
 
-    nextpage=re.findall('data-disabled="([^"]*)" href="(.+?)"', html)[-1]
+    nextpage=re.findall('data-disabled="([^"]*)" href="(.+?)"', htmlcontent)[-1]
     if nextpage[0]!='true':
         nextPage_Url = einthusanRedirectUrl+nextpage[1]
         if (page >= NUMBER_OF_PAGES):
@@ -164,9 +167,9 @@ def show_featured_movies(name, url, language, mode):
     page_url = einthusanRedirectUrl+'/movie/browse/?lang=' + language
 
     xbmcplugin.setContent(_plugin_handle, 'movies')
-    # xbmc.log(page_url, level=xbmc.LOGNOTICE)
-    html = requests.get(page_url).text
-    matches = re.compile('name="newrelease_tab".+?img src="(.+?)".+?href="\/movie\/watch\/(.+?)\/\?lang=(.+?)"><h2>(.+?)<\/h2>.+?<p>(.+?)<span>(.+?)<\/span>.+?i class=(.+?)<\/div>.+?<span>Wiki<\/span>.+?<a(.+?)>Trailer<\/span>.+?<div class="professionals">(.*?)<\/div><\/div>( <input type="radio" id="_newrelease|<ul class=)').findall(html)
+    # xbmc.log(page_url, level=xbmc.LOGINFO)
+    htmlcontent = requests.get(page_url).text
+    matches = re.compile('name="newrelease_tab".+?img src="(.+?)".+?href="\/movie\/watch\/(.+?)\/\?lang=(.+?)"><h2>(.+?)<\/h2>.+?<p>(.+?)<span>(.+?)<\/span>.+?i class=(.+?)<\/div>.+?<span>Wiki<\/span>.+?<a(.+?)>Trailer<\/span>.+?<div class="professionals">(.*?)<\/div><\/div>( <input type="radio" id="_newrelease|<ul class=)').findall(htmlcontent)
 
     for img, id, lang, name, year, genre, ishd, trailer_content, prof_content, xyz in matches:
         name = name.replace(",","").encode('ascii', 'ignore').decode('ascii')
@@ -186,7 +189,7 @@ def show_featured_movies(name, url, language, mode):
             description = ''
 
         info = {
-            'plot': unescape(html2text.html2text(description).replace('\n', ' ').replace('\r', '')),
+            'plot': html.unescape(html2text.html2text(description).replace('\n', ' ').replace('\r', '')),
             'genre': genre,
             'year': year,
             'title': html2text.html2text(name),
@@ -278,13 +281,13 @@ def show_search_box(name, url, language, mode):
     keyb = xbmc.Keyboard('', 'Search for Movies')
     keyb.doModal()
     if (keyb.isConfirmed()):
-        search_term = urllib.quote_plus(keyb.getText())
+        search_term = quote_plus(keyb.getText())
         if len(search_term) == 0:
             return
         postData = einthusanRedirectUrl+'/movie/results/?'+url+'&query=' + search_term
         headers={'Origin':einthusanRedirectUrl,'Referer':einthusanRedirectUrl+'/movie/browse/?'+url,'User-Agent':'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36'}
-        html = requests.get(postData, headers=headers).text
-        matches = re.compile('<div class="block1">.*?href=".*?watch\/(.*?)\/\?lang=(.*?)".*?<img src="(.+?)".+?<h3>(.+?)<\/h3>.+?<p>(.+?)<span>(.+?)<\/span>.+?i class=(.+?)<p class=".*?synopsis">\s*(.+?)\s*<\/p><div class="professionals">(.+?)<\/div><\/div><div class="block3">.+?<span>Wiki<\/span>.+?<a(.+?)Trailer<\/span>').findall(html)
+        htmlcontent = requests.get(postData, headers=headers).text
+        matches = re.compile('<div class="block1">.*?href=".*?watch\/(.*?)\/\?lang=(.*?)".*?<img src="(.+?)".+?<h3>(.+?)<\/h3>.+?<p>(.+?)<span>(.+?)<\/span>.+?i class=(.+?)<p class=".*?synopsis">\s*(.+?)\s*<\/p><div class="professionals">(.+?)<\/div><\/div><div class="block3">.+?<span>Wiki<\/span>.+?<a(.+?)Trailer<\/span>').findall(htmlcontent)
         for id, lang, img, name, year, genre, ishd, synopsis, prof_content, trailer_content in matches:
             name = name.replace(",","").encode('ascii', 'ignore').decode('ascii')
             movie = str(name)+','+str(id)+','+lang+','
@@ -299,7 +302,7 @@ def show_search_box(name, url, language, mode):
                 description=""
 
             info = {
-                'plot': unescape(html2text.html2text(description).replace('\n', ' ').replace('\r', '')),
+                'plot': html.unescape(html2text.html2text(description).replace('\n', ' ').replace('\r', '')),
                 'genre': genre,
                 'year': year,
                 'title': html2text.html2text(name),
@@ -328,7 +331,7 @@ def show_search_box(name, url, language, mode):
 
             addStream(name, movie, 2, image, lang, info)
 
-        nextpage=re.findall('data-disabled="([^"]*)" href="(.+?)"', html)[-1]
+        nextpage=re.findall('data-disabled="([^"]*)" href="(.+?)"', htmlcontent)[-1]
         if nextpage[0]!='true':
             nextPage_Url = einthusanRedirectUrl+nextpage[1]
             get_movies_and_music_videos_helper(name, nextPage_Url, language, 2)
@@ -371,7 +374,7 @@ def play_video(name, url, language, mode):
                 # isithd = 'itsnothd'
                 mainurl=einthusanRedirectUrl+'/movie/watch/%s/?lang=%s'%(url,lang)
                 mainurlajax=einthusanRedirectUrl+'/ajax/movie/watch/%s/?lang=%s'%(url,lang)
-                # print(mainurlajax)
+                # xbmc.log(mainurlajax, LOGINFO)
                 headers={'Origin':einthusanRedirectUrl,'Referer':einthusanRedirectUrl+'/movie/browse/?lang=hindi','User-Agent':'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36'}
                 get_movie(s, mainurl, mainurlajax, headers)
             if ret == 1:
@@ -390,8 +393,6 @@ def play_video(name, url, language, mode):
     #xbmcplugin.endOfDirectory(_plugin_handle)
 
 def get_movie(s, mainurl, mainurlajax, headers=None):
-    import HTMLParser
-    import json
 
     check_sorry_message = "Our servers are almost maxed"
     check_go_premium = "Go Premium"
@@ -419,25 +420,25 @@ def get_movie(s, mainurl, mainurlajax, headers=None):
     r=decodeEInth(lnk)
     jdata='{"EJOutcomes":"%s","NativeHLS":false}'%lnk
 
-    h = HTMLParser.HTMLParser()
     gid=re.findall('data-pageid=["\'](.*?)["\']',htm)[0]
 
-    gid=h.unescape(gid)
+    gid=html.unescape(gid)
 
     postdata={'xEvent':'UIVideoPlayer.PingOutcome','xJson':jdata,'arcVersion':'3','appVersion':'59','gorilla.csrf.Token':gid}
 
     rdata=s.post(mainurlajax,headers=headers,data=postdata,cookies=s.cookies).text
 
     r=json.loads(rdata)["Data"]["EJLinks"]
-    xbmc.log(str(decodeEInth(r).decode("base64")), level=xbmc.LOGNOTICE)
-    lnk=json.loads(decodeEInth(r).decode("base64"))["HLSLink"]
+    xbmc.log(base64.b64decode(str(decodeEInth(r))).decode('ascii'), level=xbmc.LOGINFO)
+    lnk=json.loads(base64.b64decode(decodeEInth(r)).decode('ascii'))["HLSLink"]
 
     lnk = preferred_server(lnk, mainurl)
 
-    xbmc.log(lnk, level=xbmc.LOGNOTICE)
+    xbmc.log(lnk, level=xbmc.LOGINFO)
 
     urlnew=lnk+('|'+einthusanRedirectUrl+'&Referer=%s&User-Agent=%s'%(mainurl,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36'))
-    listitem = xbmcgui.ListItem( label = str(name), iconImage = "DefaultVideo.png", thumbnailImage = xbmc.getInfoImage( "ListItem.Thumb" ) )
+    # listitem = xbmcgui.ListItem( label = str(name), icon = "DefaultVideo.png", thumb = xbmc.getInfoImage( "ListItem.Thumb" ) )
+    listitem = xbmcgui.ListItem(label = str(name))
 
     #listitem.setProperty('IsPlayable', 'true')
     listitem.setPath(urlnew)
@@ -447,7 +448,7 @@ def get_movie(s, mainurl, mainurlajax, headers=None):
     # xbmcplugin.endOfDirectory(_plugin_handle)
 
 def preferred_server(lnk, mainurl):
-    xbmc.log(location, level=xbmc.LOGNOTICE)
+    xbmc.log(location, level=xbmc.LOGINFO)
     if location != 'No Preference':
         if location == 'Dallas':
             servers = [2]
@@ -472,8 +473,8 @@ def preferred_server(lnk, mainurl):
         for i in servers:
                 urltry = ("https://cdn" + str(i+SERVER_OFFSET[0]) + ".einthusan.io/" + vidpath)
                 isitworking = requests.get(urltry, headers=new_headers).status_code
-                xbmc.log(urltry, level=xbmc.LOGNOTICE)
-                xbmc.log(str(isitworking), level=xbmc.LOGNOTICE)
+                xbmc.log(urltry, level=xbmc.LOGINFO)
+                xbmc.log(str(isitworking), level=xbmc.LOGINFO)
                 if isitworking == 200:
                         lnk = urltry
                         break
@@ -511,7 +512,7 @@ def display_setting(name, url, language, mode):
 def get_params():
     param=[]
     paramstring=sys.argv[2]
-    # xbmc.log(paramstring, level=xbmc.LOGNOTICE)
+    # xbmc.log(paramstring, level=xbmc.LOGINFO)
     if len(paramstring)>=2:
         params=sys.argv[2]
         cleanedparams=params.replace('?','')
@@ -526,15 +527,8 @@ def get_params():
                 param[splitparams[0]]=splitparams[1]
     return param
 
-def unescape(s):
-    import htmllib
-    p = htmllib.HTMLParser(None)
-    p.save_bgn()
-    p.feed(s)
-    return p.save_end()
-
 def addDir(name, url, mode, icon='', lang='',description='', fanart=''):
-    u=_plugin_url+"?url="+urllib.quote_plus(url)+"&mode="+str(mode)+"&name="+urllib.quote_plus(name)+"&lang="+urllib.quote_plus(lang)+"&einthusanRedirectUrl="+urllib.quote_plus(einthusanRedirectUrl)
+    u=_plugin_url+"?url="+quote_plus(url)+"&mode="+str(mode)+"&name="+quote_plus(name)+"&lang="+quote_plus(lang)+"&einthusanRedirectUrl="+quote_plus(einthusanRedirectUrl)
 
     liz=xbmcgui.ListItem(label=html2text.html2text(name))
     liz.setInfo('video', {'plot': description})
@@ -552,7 +546,7 @@ def addDir(name, url, mode, icon='', lang='',description='', fanart=''):
     return ok
 
 def addStream(name, url, mode, icon='', lang='',info=None):
-    u=_plugin_url+"?url="+urllib.quote_plus(url)+"&mode="+str(mode)+"&name="+urllib.quote_plus(name)+"&lang="+urllib.quote_plus(lang)+"&einthusanRedirectUrl="+urllib.quote_plus(einthusanRedirectUrl)
+    u=_plugin_url+"?url="+quote_plus(url)+"&mode="+str(mode)+"&name="+quote_plus(name)+"&lang="+quote_plus(lang)+"&einthusanRedirectUrl="+quote_plus(einthusanRedirectUrl)
 
     name,url,lang,isithd,referurl=url.split(',')
     if isithd=='itshd':
@@ -571,7 +565,7 @@ def addStream(name, url, mode, icon='', lang='',info=None):
     #liz.setRating('einthusan', 4.3, 10, True)
 
     if 'trailer' in info:
-        # xbmc.log('adding context menu item for playing trailer: '+info['trailer'], xbmc.LOGNOTICE)
+        # xbmc.log('adding context menu item for playing trailer: '+info['trailer'], xbmc.LOGINFO)
         liz.addContextMenuItems([ ('Play trailer', 'RunPlugin(%s)' % info['trailer'], ) ])
 
     ok=xbmcplugin.addDirectoryItem(handle=_plugin_handle, url=u, listitem=liz, isFolder=False)
@@ -587,12 +581,12 @@ language=''
 description=''
 
 try:
-    url=urllib.unquote_plus(params["url"])
+    url=unquote_plus(params["url"])
 except:
     pass
 
 try:
-    name=urllib.unquote_plus(params["name"])
+    name=unquote_plus(params["name"])
 except:
     pass
 
@@ -602,17 +596,17 @@ except:
     pass
 
 try:
-    language=urllib.unquote_plus(params["lang"])
+    language=unquote_plus(params["lang"])
 except:
     pass
 
 try:
-    description=urllib.unquote_plus(params["description"])
+    description=unquote_plus(params["description"])
 except:
     pass
 
 try:
-    einthusanRedirectUrl=urllib.unquote_plus(params["einthusanRedirectUrl"])
+    einthusanRedirectUrl=unquote_plus(params["einthusanRedirectUrl"])
 except:
     pass
 

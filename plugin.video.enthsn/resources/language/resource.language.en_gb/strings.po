@@ -1,0 +1,63 @@
+# Kodi Media Center language file
+# Addon Name: Einthusan
+# Addon id: plugin.video.enthsn
+# Addon Provider: Enthsn
+msgid ""
+msgstr ""
+"Project-Id-Version: XBMC-Addons\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-09-21 11:01+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: en_GB\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+
+# Kodion Settings
+
+msgctxt "#3000"
+msgid "General"
+msgstr ""
+
+msgctxt "#3001"
+msgid "Highest Video Quality"
+msgstr ""
+
+msgctxt "#3002"
+msgid "Username"
+msgstr ""
+
+msgctxt "#3003"
+msgid "Password"
+msgstr ""
+
+msgctxt "#3004"
+msgid "Location"
+msgstr ""
+
+msgctxt "#3005"
+msgid "Los Angeles"
+msgstr ""
+
+msgctxt "#3006"
+msgid "Dallas"
+msgstr ""
+
+msgctxt "#3007"
+msgid "Washinton D.C"
+msgstr ""
+
+msgctxt "#3008"
+msgid "London"
+msgstr ""
+
+msgctxt "#30012"
+msgid "No Preference"
+msgstr ""
+
+msgctxt "#30011"
+msgid "Select Your Nearest City"
+msgstr ""
