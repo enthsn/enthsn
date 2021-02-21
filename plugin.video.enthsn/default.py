@@ -408,16 +408,14 @@ def get_movie(s, mainurl, mainurlajax, headers=None):
     if re.search(check_sorry_message, htm):
         xbmcgui.Dialog().ok(
             "Server Error",
-            "Sorry. Einthusan servers are almost maxed.",
-            "Please try again in 5 - 10 mins or upgrade to a Lifetime Premium account.",
+            "Sorry. Einthusan servers are almost maxed. Please try again in 5 - 10 mins or upgrade to a Lifetime Premium account.",
         )
         return False
 
     if re.search(check_go_premium, htm):
         xbmcgui.Dialog().ok(
             "UltraHD Error",
-            "Premium Membership Required for UltraHD Movies.",
-            "Please add Premium Membership Login details in Addon Settings.",
+            "Premium Membership Required for UltraHD Movies. Please add Premium Membership Login details in Addon Settings.",
         )
         return False
 
@@ -490,7 +488,7 @@ def login_info(s, referurl):
 
     headers={'Origin':einthusanRedirectUrl,'Referer':referurl,'User-Agent':'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36'}
 
-    htm = s.get(einthusanRedirectUrl+'/login/?lang=hindi', headers=headers, allow_redirects=False).content
+    htm = s.get(einthusanRedirectUrl+'/login/?lang=hindi', headers=headers, allow_redirects=False).text
     csrf=re.findall('data-pageid=["\'](.*?)["\']',htm)[0]
     if '&#43;' in csrf: csrf = csrf.replace('&#43;', '+')
 
@@ -501,9 +499,9 @@ def login_info(s, referurl):
     headers['Referer']=einthusanRedirectUrl+'/login/?lang=hindi'
     html2= s.post(einthusanRedirectUrl+'/ajax/login/?lang=hindi',headers=headers,cookies=s.cookies, data=body,allow_redirects=False)
 
-    html3=s.get(einthusanRedirectUrl+'/account/?flashmessage=success%3A%3A%3AYou+are+now+logged+in.&lang=hindi', headers=headers, cookies=s.cookies)
+    html3=s.get(einthusanRedirectUrl+'/account/?flashmessage=success%3A%3A%3AYou+are+now+logged+in.&lang=hindi', headers=headers, cookies=s.cookies).text
 
-    csrf3 = re.findall('data-pageid=["\'](.*?)["\']',html3.text)[0]
+    csrf3 = re.findall('data-pageid=["\'](.*?)["\']',html3)[0]
     body4 = {'xEvent':'notify','xJson':'{"Alert":"SUCCESS","Heading":"AWESOME!","Line1":"You+are+now+logged+in.","Buttons":[]}', 'arcVersion':3, 'appVersion':59,'tabID':csrf+'48','gorilla.csrf.Token':csrf3}
     html4 = s.post(einthusanRedirectUrl+'/ajax/account/?lang=hindi', headers=headers, cookies=s.cookies, data=body4)
 

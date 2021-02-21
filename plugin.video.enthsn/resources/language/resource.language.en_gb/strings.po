@@ -23,23 +23,23 @@ msgid "General"
 msgstr ""
 
 msgctxt "#3001"
-msgid "Enter User Credentials"
+msgid "Premium Membership"
 msgstr ""
 
 msgctxt "#3002"
-msgid "Username"
+msgid "Enter Username"
 msgstr ""
 
 msgctxt "#3003"
-msgid "Password"
+msgid "Enter Password"
 msgstr ""
 
 msgctxt "#3004"
-msgid "Select Your Nearest City"
+msgid "Location"
 msgstr ""
 
 msgctxt "#3005"
-msgid "Location"
+msgid "Select Your Nearest City"
 msgstr ""
 
 msgctxt "#3006"
@@ -63,11 +63,11 @@ msgid "No Preference"
 msgstr ""
 
 msgctxt "#3011"
-msgid "Select Video Quality"
+msgid "Video Quality"
 msgstr ""
 
 msgctxt "#3012"
-msgid "Highest Video Quality"
+msgid "Select Highest Video Quality"
 msgstr ""
 
 msgctxt "#3013"
