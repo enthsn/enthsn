@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="repository.enthsn" name="Enthsn Add-on Repository" version="1.0.2" provider-name="Enthsn">
+<addon id="repository.enthsn" name="Enthsn Add-on Repository" version="1.0.3" provider-name="Enthsn">
     <extension point="xbmc.addon.repository" name="Enthsn Add-on Repository">
-        <info compressed="false">https://github.com/enthsn/enthsn/raw/master/zips/addons.xml</info>
-        <checksum>https://github.com/enthsn/enthsn/raw/master/zips/addons.xml.md5</checksum>
-        <datadir zip="true">https://github.com/enthsn/enthsn/raw/master/zips/</datadir>
+	<dir>
+	    <info compressed="false">https://github.com/enthsn/enthsn/raw/master/zips/addons.xml</info>
+	    <checksum>https://github.com/enthsn/enthsn/raw/master/zips/addons.xml.md5</checksum>
+	    <datadir zip="true">https://github.com/enthsn/enthsn/raw/master/zips/</datadir>
+	</dir>
     </extension>
     <extension point="xbmc.addon.metadata">
         <summary lang="en_GB">Install Add-ons for Kodi from Enthsn Add-on Repository</summary>
