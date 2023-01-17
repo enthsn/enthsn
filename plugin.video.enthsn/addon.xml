@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.enthsn" name="Einthusan" version="1.0.10" provider-name="Enthsn">
+<addon id="plugin.video.enthsn" name="Einthusan" version="1.0.11" provider-name="Enthsn">
     <requires>
         <import addon="xbmc.python" version="3.0.0"/>
         <import addon="script.module.kodi-six" />
@@ -21,7 +21,7 @@
         <source>https://github.com/enthsn/enthsn</source>
         <assets>
             <icon>icon.png</icon>
-            <fanart>fanart.png</fanart>
+            <fanart>fanart.jpg</fanart>
             <screenshot>images/screenshot-1.png</screenshot>
             <screenshot>images/screenshot-2.png</screenshot>
             <screenshot>images/screenshot-3.png</screenshot>
